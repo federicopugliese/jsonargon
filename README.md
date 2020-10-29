@@ -22,7 +22,7 @@ The Project Archetype is simple: **the first time you fork your repository**, yo
 python generate.py
 ```
 
-If you run on any issue, please refer to the specific README on the archetype/<archetype> branch. 
+If you run on any issue, please refer to the specific `src/archetype/README.md` on the `archetype/<archetype>` branch. 
 
 This will generate a module (a folder) in the `src` directory for each entry specified in the `generate.yml`. 
 This is useful when your project requires more than a package or component, e.g. frontend and backend and so on.

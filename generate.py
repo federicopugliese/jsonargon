@@ -58,6 +58,7 @@ def git_checkout(branch):
 
 def generate(module, archetype, config):
 
+    print("---- Generating {} (archetype: {})".format(module, archetype))
     # Move to the correct branch
     git_checkout("archetype/" + archetype)
 
