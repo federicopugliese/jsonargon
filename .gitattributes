@@ -1,0 +1,5 @@
+# convert to OS line endings on checkout, back to LF on commit
+* text=auto
+
+# ensure unix style line endings for specific files
+*.sh text eol=lf
