@@ -3,22 +3,28 @@ import shutil
 import subprocess
 import sys
 
-# Import the yaml module
+# Import the useful packages
 try:
     import yaml
+    from git import Repo
 except ImportError:
-    # Install the yaml interpreter
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "PyYAML==5.3.1"])
+    # Install the packages
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "PyYAML==5.3.1", "gitpython==3.1.11"])
     import yaml
+    from git import Repo
 
 
 SOURCE = "src"
 MAIN_BRANCH = "master"
+ARCHETYPE_BRANCH_PREFIX = "archetype/"
 
 PROJECT_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 SOURCE_FOLDER = os.path.join(PROJECT_FOLDER, SOURCE)
 ARCHETYPE_FOLDER = os.path.join(SOURCE_FOLDER, "archetype")
 GENERATE_FILE = os.path.join(PROJECT_FOLDER, "generate.yml")
+
+# Create this repo reference
+repo = Repo(PROJECT_FOLDER)
 
 
 def main():
@@ -33,6 +39,9 @@ def main():
         for module, specifications in config[SOURCE].items():
             generate(module, specifications["archetype"], specifications["config"])
 
+        # Clean the branches (remove all the archetype branches)
+        clean_branches()
+
     except Exception as e:
 
         # Remove all the generated files
@@ -42,7 +51,7 @@ def main():
                 shutil.rmtree(filepath)
 
         # Get back to the correct branch
-        git_checkout(MAIN_BRANCH)
+        repo.git.checkout(MAIN_BRANCH)
         raise e
 
     # Auto-remove this file and yml
@@ -52,15 +61,33 @@ def main():
     print("Done.")
 
 
-def git_checkout(branch):
-    subprocess.check_call(["git", "checkout", branch], cwd=PROJECT_FOLDER)
+def clean_branches():
+
+    # Sanity check - NEVER delete the branches from the project archetype itself!
+    is_original_archetype = [url for url in repo.remote().urls if "mlreply/project-archetype.git" in url]
+    if not is_original_archetype:
+
+        # Remove all remote archetype branches
+        for branch in repo.remote().refs:
+            name = branch.remote_head
+            if name.startswith(ARCHETYPE_BRANCH_PREFIX):
+                repo.remote().push(":{}".format(name))
+
+        # Remove local archetype branches
+        archetypes = [branch for branch in repo.heads if branch.name.startswith(ARCHETYPE_BRANCH_PREFIX)]
+        repo.delete_head([archetypes], force=True)
+
+    else:
+
+        raise PermissionError("You were trying to delete all the branches from the original archetype! "
+                              "You have to fork this repository, not use it directly!")
 
 
 def generate(module, archetype, config):
 
     print("---- Generating {} (archetype: {})".format(module, archetype))
     # Move to the correct branch
-    git_checkout("archetype/" + archetype)
+    repo.git.checkout(ARCHETYPE_BRANCH_PREFIX + archetype)
 
     # Generate the archetype
     params = ["--{}={}".format(key, value) for key, value in config.items()]
@@ -71,7 +98,7 @@ def generate(module, archetype, config):
     os.rename(ARCHETYPE_FOLDER, module_folder)
 
     # Move back
-    git_checkout(MAIN_BRANCH)
+    repo.git.checkout(MAIN_BRANCH)
 
 
 def get_config():
