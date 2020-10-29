@@ -31,7 +31,7 @@ def main():
 
         # For each specified module, generate from its archetype
         for module, specifications in config[SOURCE].items():
-            generate(module, specifications["type"], specifications["config"])
+            generate(module, specifications["archetype"], specifications["config"])
 
     except Exception as e:
 
@@ -56,10 +56,10 @@ def git_checkout(branch):
     subprocess.check_call(["git", "checkout", branch], cwd=PROJECT_FOLDER)
 
 
-def generate(module, module_type, config):
+def generate(module, archetype, config):
 
     # Move to the correct branch
-    git_checkout("archetype/" + module_type)
+    git_checkout("archetype/" + archetype)
 
     # Generate the archetype
     params = ["--{}={}".format(key, value) for key, value in config.items()]
