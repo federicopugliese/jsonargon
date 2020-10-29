@@ -90,8 +90,12 @@ def generate(module, archetype, config):
     repo.git.checkout(ARCHETYPE_BRANCH_PREFIX + archetype)
 
     # Generate the archetype
-    params = ["--{}={}".format(key, value) for key, value in config.items()]
-    subprocess.check_call([sys.executable, "generate.py", *params], cwd=ARCHETYPE_FOLDER)
+    try:
+        params = ["--{}={}".format(key, value) for key, value in config.items()]
+        subprocess.check_call([sys.executable, "generate.py", *params], cwd=ARCHETYPE_FOLDER)
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError("Error during generation. Look before the 'CalledProcessError' "
+                           "in this log to see the real error!") from e
 
     # End the generation by renaming the module folder
     module_folder = os.path.join(SOURCE_FOLDER, module)
