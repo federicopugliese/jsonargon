@@ -78,3 +78,24 @@ The package name must be lower case, without underscores
 
 It will also save the required python version for your package in `package/python.cfg`. ***NEVER 
 ALTER THIS FILE IF YOU DO NOT NEED TO CHANGE YOUR REQUIRED VERSION OF PYTHON.***
+
+
+### Flask
+
+This archetype is used to build a Python package running Flask.
+
+It has support for Gunicorn and Docker as well.
+
+```
+src:
+  ...
+  <modulename>:
+    archetype: flask
+    config:
+      package: <packagename>
+      description: "<Your package description>"
+      python-version: <python complete version, e.g. 3.7.4>
+  ...
+```
+
+Please refer to the Python archetype for details on the fields.
