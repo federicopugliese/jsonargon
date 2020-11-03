@@ -3,8 +3,8 @@
 Use this archetype to start with your project. **You must have Python >= 3.7.0 installed on your machine 
 ([click here to download](https://www.python.org/downloads/release/python-374/))**, even if you will not use a Python project.
 
-1. Fork this repository
-1. Clone the resulting repository on your machine
+1. Import this repository into a new one (***DO NOT FORK***)
+1. Clone the resulting repository onto your machine
 1. Follow the customization instructions
 
 
@@ -13,7 +13,7 @@ Use this archetype to start with your project. **You must have Python >= 3.7.0 i
 **Please check your python version**. If your `python --version` command gives you a wrong Python, find the path to the
 right one on your file system and use it directly (e.g. `/path/to/python ...`).
 
-The Project Archetype is simple: **the first time you fork your repository**, you have to:
+The Project Archetype is simple: **the first time you create your repository**, you have to:
 
 1. Modify the `generate.yml` file to add all your modules. You can find an example in the Archetypes section of this README.
 3. Run `generate.py` with the following command. 
@@ -29,7 +29,7 @@ This is useful when your project requires more than a package or component, e.g.
 
 For instance, you can have multiple Python packages with different virtualenvs.
 
-**Remember to make a commit and push!** This is your starting point for your project.
+The `generate.py` will also commit and push for you
 
 
 ## Archetypes
@@ -99,3 +99,29 @@ src:
 ```
 
 Please refer to the Python archetype for details on the fields.
+
+
+### Demo Flask
+
+This archetype is used to build a demo by MLReply, i.e. a Python package running Flask, with a standard frontend and a backend.
+
+It has support for Google Cloud.
+
+```
+src:
+  ...
+  <modulename>:
+    archetype: demo-flask
+    config:
+      package: <packagename>
+      description: "<Your package description>"
+      python-version: <python complete version, e.g. 3.7.4>
+      gcp-project: <Google Cloud project id where the demo will run, e.g. mlr-demo-something>
+      input: {text,image,video}
+      output: {text,image,video} 
+  ...
+```
+
+Input and output will be used to create a custom frontend to managed the demo input and output; the GCP project is the one created to host the demo.
+
+Please refer to the Flask archetype for details on the other fields.
