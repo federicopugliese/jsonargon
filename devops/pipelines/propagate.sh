@@ -15,6 +15,7 @@ current=$( git branch | grep '*' | cut -f 2 -d ' ' )
 sons=$( cat ${SONS_FILE} | grep "${current}:" | cut -f 2 -d ':' )
 
 # For each son check for merge conflicts
+git fetch
 for son in ${sons}; do
 
     echo "Merging into ${son}"
