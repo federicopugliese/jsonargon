@@ -3,10 +3,10 @@ import shutil
 import subprocess
 import sys
 
-# Import the useful packages
 from pathlib import Path
 
 try:
+    # Import the useful packages
     import yaml
     from git import Repo
 except ImportError:
@@ -39,7 +39,7 @@ ARCHETYPE_FILES = [
 repo = Repo(PROJECT_FOLDER)
 
 
-def main():
+def main(test=False):
 
     # Get configuration file
     config = get_config()
@@ -52,7 +52,7 @@ def main():
             generate(module, specifications["archetype"], specifications["config"])
 
         # Clean the branches (remove all the archetype branches)
-        clean_branches()
+        clean_branches(test=test)
 
     except Exception as e:
 
@@ -72,7 +72,7 @@ def main():
     print("Done.")
 
 
-def clean_branches():
+def clean_branches(test=False):
 
     # Sanity check - NEVER delete the branches from the project archetype itself!
     is_original_archetype = [url for url in repo.remote().urls if "mlreply/project-archetype.git" in url]
@@ -90,8 +90,14 @@ def clean_branches():
 
     else:
 
-        raise PermissionError("You were trying to delete all the branches from the original archetype! "
-                              "You have to fork this repository, not use it directly!")
+        # Raise error (or just print a message in case of tests)
+        error = "You were trying to delete all the branches from the original archetype! " \
+                "You have to IMPORT this repository, not to use it directly!"
+        if test:
+            # Just print an error message
+            print(error)
+        else:
+            raise PermissionError(error)
 
 
 def clean_files():
