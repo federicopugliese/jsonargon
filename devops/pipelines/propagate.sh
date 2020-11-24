@@ -19,7 +19,7 @@ for son in ${sons}; do
 
     echo "Merging into ${son}"
     git fetch origin "+refs/heads/${son}:refs/remotes/origin/${son}"
-    git checkout ${son}
+    git checkout --track origin/${son}
     git merge --no-edit --no-ff ${son}
 
 done
