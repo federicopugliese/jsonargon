@@ -1,6 +1,11 @@
 definitions:
 
   steps:
+    - step: &test
+        name: "Test"
+        image: python:3.7.4-slim
+        script:
+          - source ./devops/pipelines/test.sh
     - step: &propagate
         name: "Propagate changes"
         script:
@@ -15,5 +20,6 @@ pipelines:
     archetype/*:
       - step: *propagate
     dev:
+      - step: *test
       - step: *propagate
 

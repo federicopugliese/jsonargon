@@ -2,7 +2,7 @@
 
 set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-MAIN_DIR="${SCRIPT_DIR}/../../"
+MAIN_DIR="${SCRIPT_DIR}/../.."
 
 SONS_FILE="${MAIN_DIR}/devops/branches/sons.txt"
 

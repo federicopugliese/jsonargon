@@ -32,7 +32,8 @@ ARCHETYPE_FILES = [
     GENERATE_FILE,
     BITBUCKET_FILE,
     os.path.join(DEVOPS_FOLDER, "branches"),
-    os.path.join(DEVOPS_FOLDER, "pipelines")
+    os.path.join(DEVOPS_FOLDER, "pipelines"),
+    os.path.join(DEVOPS_FOLDER, "tests")
 ]
 
 # Create this repo reference
