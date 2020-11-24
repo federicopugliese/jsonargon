@@ -116,6 +116,7 @@ def generate(module, archetype, config):
     # Generate the archetype
     try:
         params = ["--{}={}".format(key, value) for key, value in config.items()]
+        params.append("--modulename="+module)
         subprocess.check_call([sys.executable, "generate.py", *params], cwd=ARCHETYPE_FOLDER)
     except subprocess.CalledProcessError as e:
         raise RuntimeError("Error during generation. Look before the 'CalledProcessError' "
