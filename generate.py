@@ -4,6 +4,8 @@ import subprocess
 import sys
 
 # Import the useful packages
+from pathlib import Path
+
 try:
     import yaml
     from git import Repo
@@ -21,7 +23,17 @@ ARCHETYPE_BRANCH_PREFIX = "archetype/"
 PROJECT_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 SOURCE_FOLDER = os.path.join(PROJECT_FOLDER, SOURCE)
 ARCHETYPE_FOLDER = os.path.join(SOURCE_FOLDER, "archetype")
+DEVOPS_FOLDER = os.path.join(PROJECT_FOLDER, "devops")
 GENERATE_FILE = os.path.join(PROJECT_FOLDER, "generate.yml")
+BITBUCKET_FILE = os.path.join(PROJECT_FOLDER, "bitbucket-pipelines.yml")
+
+ARCHETYPE_FILES = [
+    os.path.realpath(__file__),
+    GENERATE_FILE,
+    BITBUCKET_FILE,
+    os.path.join(DEVOPS_FOLDER, "branches"),
+    os.path.join(DEVOPS_FOLDER, "pipelines")
+]
 
 # Create this repo reference
 repo = Repo(PROJECT_FOLDER)
@@ -55,9 +67,8 @@ def main():
         raise e
 
     # Auto-remove this file and yml
-    print("Success! Deleting generate.py and generate.yml...")
-    os.remove(os.path.realpath(__file__))
-    os.remove(GENERATE_FILE)
+    print("Success! Deleting archetype files...")
+    clean_files()
     print("Done.")
 
 
@@ -81,6 +92,19 @@ def clean_branches():
 
         raise PermissionError("You were trying to delete all the branches from the original archetype! "
                               "You have to fork this repository, not use it directly!")
+
+
+def clean_files():
+
+    # Remove files used for the archetype
+    for file in ARCHETYPE_FILES:
+        if os.path.isdir(file):
+            shutil.rmtree(file)
+        else:
+            os.remove(file)
+
+    # Create a blank pipeline
+    Path(os.path.join(PROJECT_FOLDER, "bitbucket-pipelines.yml")).touch()
 
 
 def generate(module, archetype, config):
