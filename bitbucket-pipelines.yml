@@ -4,6 +4,8 @@ definitions:
     - step: &test
         name: "Test"
         image: python:3.7.4-slim
+        caches:
+          - pip
         script:
           - source ./devops/pipelines/test.sh
     - step: &propagate
