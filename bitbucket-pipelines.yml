@@ -1,0 +1,19 @@
+definitions:
+
+  steps:
+    - step: &propagate
+        name: "Propagate changes"
+        script:
+          - source ./devops/pipelines/propagate.sh
+
+# Pipelines
+pipelines:
+
+  # Perform propagate step on each touched branch
+  branches:
+
+    archetype/*:
+      - step: *propagate
+    dev:
+      - step: *propagate
+
