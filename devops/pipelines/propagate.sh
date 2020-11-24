@@ -15,10 +15,10 @@ current=$( git branch | grep '*' | cut -f 2 -d ' ' )
 sons=$( cat ${SONS_FILE} | grep "${current}:" | cut -f 2 -d ':' )
 
 # For each son check for merge conflicts
-git fetch
 for son in ${sons}; do
 
     echo "Merging into ${son}"
+    git fetch origin "+refs/heads/${son}:refs/remotes/origin/${son}"
     git checkout ${son}
     git merge --no-edit --no-ff ${son}
 
