@@ -1,0 +1,27 @@
+definitions:
+
+  steps:
+    - step: &test
+        name: "Test"
+        image: python:3.7.4-slim
+        caches:
+          - pip
+        script:
+          - source ./devops/pipelines/test.sh
+    - step: &propagate
+        name: "Propagate changes"
+        script:
+          - source ./devops/pipelines/propagate.sh
+
+# Pipelines
+pipelines:
+
+  # Perform propagate step on each touched branch
+  branches:
+
+    archetype/*:
+      - step: *propagate
+    dev:
+      - step: *test
+      - step: *propagate
+

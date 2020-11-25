@@ -3,8 +3,10 @@ import shutil
 import subprocess
 import sys
 
-# Import the useful packages
+from pathlib import Path
+
 try:
+    # Import the useful packages
     import yaml
     from git import Repo
 except ImportError:
@@ -21,13 +23,24 @@ ARCHETYPE_BRANCH_PREFIX = "archetype/"
 PROJECT_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 SOURCE_FOLDER = os.path.join(PROJECT_FOLDER, SOURCE)
 ARCHETYPE_FOLDER = os.path.join(SOURCE_FOLDER, "archetype")
+DEVOPS_FOLDER = os.path.join(PROJECT_FOLDER, "devops")
 GENERATE_FILE = os.path.join(PROJECT_FOLDER, "generate.yml")
+BITBUCKET_FILE = os.path.join(PROJECT_FOLDER, "bitbucket-pipelines.yml")
+
+ARCHETYPE_FILES = [
+    os.path.realpath(__file__),
+    GENERATE_FILE,
+    BITBUCKET_FILE,
+    os.path.join(DEVOPS_FOLDER, "branches"),
+    os.path.join(DEVOPS_FOLDER, "pipelines"),
+    os.path.join(DEVOPS_FOLDER, "tests")
+]
 
 # Create this repo reference
 repo = Repo(PROJECT_FOLDER)
 
 
-def main():
+def main(test=False):
 
     # Get configuration file
     config = get_config()
@@ -40,7 +53,7 @@ def main():
             generate(module, specifications["archetype"], specifications["config"])
 
         # Clean the branches (remove all the archetype branches)
-        clean_branches()
+        clean_branches(test=test)
 
     except Exception as e:
 
@@ -55,13 +68,12 @@ def main():
         raise e
 
     # Auto-remove this file and yml
-    print("Success! Deleting generate.py and generate.yml...")
-    os.remove(os.path.realpath(__file__))
-    os.remove(GENERATE_FILE)
+    print("Success! Deleting archetype files...")
+    clean_files()
     print("Done.")
 
 
-def clean_branches():
+def clean_branches(test=False):
 
     # Sanity check - NEVER delete the branches from the project archetype itself!
     is_original_archetype = [url for url in repo.remote().urls if "mlreply/project-archetype.git" in url]
@@ -79,8 +91,27 @@ def clean_branches():
 
     else:
 
-        raise PermissionError("You were trying to delete all the branches from the original archetype! "
-                              "You have to fork this repository, not use it directly!")
+        # Raise error (or just print a message in case of tests)
+        error = "You were trying to delete all the branches from the original archetype! " \
+                "You have to IMPORT this repository, not to use it directly!"
+        if test:
+            # Just print an error message
+            print(error)
+        else:
+            raise PermissionError(error)
+
+
+def clean_files():
+
+    # Remove files used for the archetype
+    for file in ARCHETYPE_FILES:
+        if os.path.isdir(file):
+            shutil.rmtree(file)
+        else:
+            os.remove(file)
+
+    # Create a blank pipeline
+    Path(os.path.join(PROJECT_FOLDER, "bitbucket-pipelines.yml")).touch()
 
 
 def generate(module, archetype, config):
@@ -92,6 +123,7 @@ def generate(module, archetype, config):
     # Generate the archetype
     try:
         params = ["--{}={}".format(key, value) for key, value in config.items()]
+        params.append("--modulename="+module)
         subprocess.check_call([sys.executable, "generate.py", *params], cwd=ARCHETYPE_FOLDER)
     except subprocess.CalledProcessError as e:
         raise RuntimeError("Error during generation. Look before the 'CalledProcessError' "
