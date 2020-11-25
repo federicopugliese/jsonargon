@@ -45,6 +45,8 @@ The following archetypes are supported, with their config to add in the `generat
 
 This archetype is used to build a generic Python package.
 
+It has support for Docker.
+
 ```
 src:
   ...
