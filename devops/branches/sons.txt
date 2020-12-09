@@ -1,4 +1,4 @@
 # List here the sons with this format: <father>: <son> <son> <son>
-dev: archetype/python
+dev: archetype/python pipelines
 archetype/python: archetype/flask
 archetype/flask: archetype/demo-flask

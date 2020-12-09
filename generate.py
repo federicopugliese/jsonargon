@@ -19,6 +19,7 @@ except ImportError:
 SOURCE = "src"
 MAIN_BRANCH = "master"
 ARCHETYPE_BRANCH_PREFIX = "archetype/"
+PIPELINES_BRANCH_PREFIX = "pipelines"
 
 PROJECT_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 SOURCE_FOLDER = os.path.join(PROJECT_FOLDER, SOURCE)
@@ -75,6 +76,9 @@ def main(test=False):
 
 def clean_branches(test=False):
 
+    def is_to_be_cleaned(branch_name):
+        return branch_name.startswith(ARCHETYPE_BRANCH_PREFIX) or branch_name.startswith(PIPELINES_BRANCH_PREFIX)
+
     # Sanity check - NEVER delete the branches from the project archetype itself!
     is_original_archetype = [url for url in repo.remote().urls if "mlreply/project-archetype.git" in url]
     if not is_original_archetype:
@@ -82,11 +86,11 @@ def clean_branches(test=False):
         # Remove all remote archetype branches
         for branch in repo.remote().refs:
             name = branch.remote_head
-            if name.startswith(ARCHETYPE_BRANCH_PREFIX):
+            if is_to_be_cleaned(name):
                 repo.remote().push(":{}".format(name))
 
         # Remove local archetype branches
-        archetypes = [branch for branch in repo.heads if branch.name.startswith(ARCHETYPE_BRANCH_PREFIX)]
+        archetypes = [branch for branch in repo.heads if is_to_be_cleaned(branch.name)]
         repo.delete_head([archetypes], force=True)
 
     else:
