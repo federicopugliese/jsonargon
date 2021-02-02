@@ -4,7 +4,15 @@ Use this archetype to start with your project. **You must have Python >= 3.7.0 i
 ([click here to download](https://www.python.org/downloads/release/python-374/))**, even if you will not use a Python project.
 
 1. Import this repository into a new one (***DO NOT FORK***)
+    1. Click on the + on the left, under `IMPORT` select "Repository"
+    1. Copy the clone link: https://bitbucket.org/mlreply/project-archetype.git
+    1. Flag "requires authorization" and insert your credentials
 1. Clone the resulting repository onto your machine
+1. Be sure that you can `git pull` without asking your password
+    1. If it asks for your password:
+        1. Windows: run `git config credential.helper wincred`
+        1. Unix: run `git config credential.helper cache`
+        1. Try with `git pull` twice; the first time it might ask for your password, the second one it should not.
 1. Follow the customization instructions
 
 
@@ -16,7 +24,7 @@ right one on your file system and use it directly (e.g. `/path/to/python ...`).
 The Project Archetype is simple: **the first time you create your repository**, you have to:
 
 1. Modify the `generate.yml` file to add all your modules. You can find an example in the Archetypes section of this README.
-3. Run `generate.py` with the following command. 
+1. Run `generate.py` with the following command. 
 
 ```
 python generate.py
@@ -63,14 +71,14 @@ Example:
 
 ```
 src:
-  ...
+
   backend:
     archetype: python
     config:
       package: mailer
       description: "A package to manage mails"
       python-version: 3.7.4
-  ...
+
 ```
 
 The module name might be the same as the package name. This is simply the name of the folder containing all the required code to work with your package.
