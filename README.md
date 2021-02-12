@@ -3,10 +3,12 @@
 Use this archetype to start with your project. **You must have Python >= 3.7.0 installed on your machine 
 ([click here to download](https://www.python.org/downloads/release/python-374/))**, even if you will not use a Python project.
 
-1. Import this repository into a new one (***DO NOT FORK***)
-    1. Click on the + on the left, under `IMPORT` select "Repository"
-    1. Copy the clone link: https://bitbucket.org/mlreply/project-archetype.git
-    1. Flag "requires authorization" and insert your credentials
+1. Create a new repo from this one. You have two ways - the first one is strongly suggested:
+    1. Go to https://bitbucket.org/mlreply/project-creator/addon/pipelines/home and "Run Pipeline" from "master". Select the right one (at least "bitbucket").
+    1. OR import this repository into a new one (***DO NOT FORK***)
+        1. Click on the + on the left, under `IMPORT` select "Repository"
+        1. Copy the clone link: https://bitbucket.org/mlreply/project-archetype.git
+        1. Flag "requires authorization" and insert your credentials
 1. Clone the resulting repository onto your machine
 1. Be sure that you can `git pull` without asking your password
     1. If it asks for your password:
