@@ -23,8 +23,11 @@ right one on your file system and use it directly (e.g. `/path/to/python ...`).
 
 The Project Archetype is simple: **the first time you create your repository**, you have to:
 
+1. Create a `feat/modules` branch from `dev` and move onto it.
 1. Modify the `generate.yml` file to add all your modules. You can find an example in the Archetypes section of this README.
 1. Run `generate.py` with the following command. 
+1. Commit and push.
+1. Open and merge a Pull Request from `feat/modules` to `dev` (closing the first branch).
 
 ```
 python generate.py
@@ -37,7 +40,6 @@ This is useful when your project requires more than a package or component, e.g.
 
 For instance, you can have multiple Python packages with different virtualenvs.
 
-The `generate.py` will also commit and push for you
 
 
 ## Archetypes
