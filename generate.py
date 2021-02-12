@@ -18,6 +18,7 @@ except ImportError:
 
 SOURCE = "src"
 MAIN_BRANCH = "master"
+FIRST_BRANCH = "feat/modules"
 ARCHETYPE_BRANCH_PREFIX = "archetype/"
 PIPELINES_BRANCH_PREFIX = "pipelines"
 
@@ -56,6 +57,14 @@ def main(test=False):
         # Clean the branches (remove all the archetype branches)
         clean_branches(test=test)
 
+        # Create the first branch
+        repo.git.checkout(MAIN_BRANCH)
+        branch = repo.create_head(FIRST_BRANCH)
+        branch.checkout()
+        repo.git.commit("-am", "First commit")
+        origin = repo.remote()
+        origin.push(FIRST_BRANCH)
+
     except Exception as e:
 
         # Remove all the generated files
@@ -84,6 +93,7 @@ def clean_branches(test=False):
     if not is_original_archetype:
 
         # Remove all remote archetype branches
+        print("Cleaning branches...")
         for branch in repo.remote().refs:
             name = branch.remote_head
             if is_to_be_cleaned(name):
@@ -92,6 +102,7 @@ def clean_branches(test=False):
         # Remove local archetype branches
         archetypes = [branch for branch in repo.heads if is_to_be_cleaned(branch.name)]
         repo.delete_head([archetypes], force=True)
+        print("Done.")
 
     else:
 
