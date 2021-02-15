@@ -18,6 +18,7 @@ except ImportError:
 
 SOURCE = "src"
 MAIN_BRANCH = "master"
+FIRST_BRANCH = "feat/modules"
 ARCHETYPE_BRANCH_PREFIX = "archetype/"
 PIPELINES_BRANCH_PREFIX = "pipelines"
 
@@ -56,6 +57,21 @@ def main(test=False):
         # Clean the branches (remove all the archetype branches)
         clean_branches(test=test)
 
+        # Create the first branch
+        print("Creating the first commit...")
+        repo.git.checkout(MAIN_BRANCH)
+        branch = repo.create_head(FIRST_BRANCH)
+        branch.checkout()
+        repo.git.add("-A")
+        repo.git.commit("-m", "First commit")
+        origin = repo.remote()
+        origin.push(FIRST_BRANCH)
+        print("Done!")
+
+        # Create PR
+        repo_name = list(origin.urls)[0].split("/")[-1].split(".git")[0]  # get .../repo_name.git
+        print(f"Create and merge a Pull Request from feat/modules to dev here: https://bitbucket.org/mlreply/{repo_name}/pull-requests/new")
+
     except Exception as e:
 
         # Remove all the generated files
@@ -84,6 +100,7 @@ def clean_branches(test=False):
     if not is_original_archetype:
 
         # Remove all remote archetype branches
+        print("Cleaning branches...")
         for branch in repo.remote().refs:
             name = branch.remote_head
             if is_to_be_cleaned(name):
@@ -92,6 +109,7 @@ def clean_branches(test=False):
         # Remove local archetype branches
         archetypes = [branch for branch in repo.heads if is_to_be_cleaned(branch.name)]
         repo.delete_head([archetypes], force=True)
+        print("Done.")
 
     else:
 
@@ -155,4 +173,5 @@ def get_config():
 
 if __name__ == '__main__':
 
-    main()
+    repo.remote()
+    pass
