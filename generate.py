@@ -173,5 +173,4 @@ def get_config():
 
 if __name__ == '__main__':
 
-    repo.remote()
-    pass
+    main()
