@@ -58,12 +58,19 @@ def main(test=False):
         clean_branches(test=test)
 
         # Create the first branch
+        print("Creating the first commit...")
         repo.git.checkout(MAIN_BRANCH)
         branch = repo.create_head(FIRST_BRANCH)
         branch.checkout()
-        repo.git.commit("-am", "First commit")
+        repo.git.add("-A")
+        repo.git.commit("-m", "First commit")
         origin = repo.remote()
         origin.push(FIRST_BRANCH)
+        print("Done!")
+
+        # Create PR
+        repo_name = list(origin.urls)[0].split("/")[-1].split(".git")[0]  # get .../repo_name.git
+        print(f"Create and merge a Pull Request from feat/modules to dev here: https://bitbucket.org/mlreply/{repo_name}/pull-requests/new")
 
     except Exception as e:
 
@@ -166,4 +173,5 @@ def get_config():
 
 if __name__ == '__main__':
 
-    main()
+    repo.remote()
+    pass
