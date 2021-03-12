@@ -57,6 +57,11 @@ def main(test=False):
         # Clean the branches (remove all the archetype branches)
         clean_branches(test=test)
 
+        # Auto-remove this file and yml
+        print("Success! Deleting archetype files...")
+        clean_files()
+        print("Done.")
+
         # Create the first branch
         print("Creating the first commit...")
         repo.git.checkout(MAIN_BRANCH)
@@ -83,11 +88,6 @@ def main(test=False):
         # Get back to the correct branch
         repo.git.checkout(MAIN_BRANCH)
         raise e
-
-    # Auto-remove this file and yml
-    print("Success! Deleting archetype files...")
-    clean_files()
-    print("Done.")
 
 
 def clean_branches(test=False):
