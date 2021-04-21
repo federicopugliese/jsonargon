@@ -1,6 +1,14 @@
 # Project Archetype
 
-Use this archetype to start with your project. **You must have Python >= 3.7.0 installed on your machine 
+Use this archetype to either:
+
+1. Start with a new project
+1. Add new components to your project
+
+
+## Start with your project
+
+**You must have Python >= 3.7.0 installed on your machine 
 ([click here to download](https://www.python.org/downloads/release/python-374/))**, even if you will not use a Python project.
 
 1. Create a new repo from this one. You have two ways - the first one is strongly suggested:
@@ -18,7 +26,7 @@ Use this archetype to start with your project. **You must have Python >= 3.7.0 i
 1. Follow the customization instructions
 
 
-## Customization
+### Customization
 
 **Please check your python version**. If your `python --version` command gives you a wrong Python, find the path to the
 right one on your file system and use it directly (e.g. `/path/to/python ...`).
@@ -41,6 +49,22 @@ This is useful when your project requires more than a package or component, e.g.
 For instance, you can have multiple Python packages with different virtualenvs.
 
 
+## Add new components to your project
+
+1. On your computer, create a temporary `generate.yml` file
+    1. Fill it with the new components you want, according to the Archetypes section of this README
+1. Open the git bash where `generate.yml` is located
+    1. Run `cat generate.yml | base64 -w0`
+    1. Copy the output (with no trailing spaces!)
+1. Go to https://bitbucket.org/mlreply/project-archetype/addon/pipelines/home
+   1. Select "Run Pipeline" and choose branch "master"
+   1. Select pipeline "custom: generate-components"
+   1. Paste the copied output of previous step in `GENERATE_YML_BASE64`
+   1. Run the pipeline (in case of errors, open the `source ./devops/pipelines/generate.sh` on the right to check)
+1. Once the pipeline has succeeded, move to the Artifacts tab on the right
+   1. Download the zip named `src/**`
+   1. Open it (typically with right click -> 7zip -> open) or extract it
+   1. Pick the content of the inner `src` folder. It will have the folders of your modules!
 
 ## Archetypes
 
