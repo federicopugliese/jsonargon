@@ -1,8 +1,1 @@
 src:
-
-  backend:
-    archetype: python
-    config:
-      package: mailer
-      description: "A package to manage mails"
-      python-version: 3.7.4
