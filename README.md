@@ -64,7 +64,7 @@ For instance, you can have multiple Python packages with different virtualenvs.
 1. Once the pipeline has succeeded, move to the Artifacts tab on the right
     1. Download the zip named `src/**`
     1. Open it (typically with right click -> 7zip -> open) or extract it
-    1. Pick the content of the inner `src` folder. It will have the folders of your modules!
+    1. Pick the content of the inner `src` folder. It will have the folders of your new components!
 
 ## Archetypes
 
