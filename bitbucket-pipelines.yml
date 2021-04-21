@@ -1,6 +1,7 @@
 definitions:
 
   steps:
+
     - step: &test
         name: "Test"
         image: python:3.7.4-slim
@@ -8,10 +9,24 @@ definitions:
           - pip
         script:
           - source ./devops/pipelines/test.sh
+
     - step: &propagate
         name: "Propagate changes"
         script:
           - source ./devops/pipelines/propagate.sh
+
+    - step: &generate
+        name: "Generate components"
+        image: python:3.7.4
+        script:
+          - source ./devops/pipelines/generate.sh
+        artifacts:
+          - src/**
+
+  stepsWithVariables:
+    - variables: &generate-yml
+        - name: GENERATE_YML_BASE64
+
 
 # Pipelines
 pipelines:
@@ -24,4 +39,12 @@ pipelines:
     dev:
       - step: *test
       - step: *propagate
+
+  # Manual pipelines
+  custom:
+
+    # Generate components
+    generate-components:
+      - variables: *generate-yml
+      - step: *generate
 

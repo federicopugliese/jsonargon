@@ -1,3 +1,4 @@
+import argparse
 import os
 import shutil
 import subprocess
@@ -20,7 +21,7 @@ SOURCE = "src"
 MAIN_BRANCH = "master"
 FIRST_BRANCH = "feat/modules"
 ARCHETYPE_BRANCH_PREFIX = "archetype/"
-PIPELINES_BRANCH_PREFIX = "pipelines"
+KEEP_BRANCHES = ["dev", "master"]
 
 PROJECT_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 SOURCE_FOLDER = os.path.join(PROJECT_FOLDER, SOURCE)
@@ -42,7 +43,7 @@ ARCHETYPE_FILES = [
 repo = Repo(PROJECT_FOLDER)
 
 
-def main(test=False):
+def main(local_generation=False):
 
     # Get configuration file
     config = get_config()
@@ -55,11 +56,11 @@ def main(test=False):
             generate(module, specifications["archetype"], specifications["config"])
 
         # Clean the branches (remove all the archetype branches)
-        clean_branches(test=test)
+        clean_branches(local_generation=local_generation)
 
         # Auto-remove this file and yml
         print("Success! Deleting archetype files...")
-        clean_files()
+        clean_files(local_generation=local_generation)
         print("Done.")
 
         # Create the first branch
@@ -70,12 +71,14 @@ def main(test=False):
         repo.git.add("-A")
         repo.git.commit("-m", "First commit")
         origin = repo.remote()
-        origin.push(FIRST_BRANCH)
+        if not local_generation:
+            origin.push(FIRST_BRANCH)
         print("Done!")
 
         # Create PR
-        repo_name = list(origin.urls)[0].split("/")[-1].split(".git")[0]  # get .../repo_name.git
-        print(f"Create and merge a Pull Request from feat/modules to dev here: https://bitbucket.org/mlreply/{repo_name}/pull-requests/new")
+        if not local_generation:
+            repo_name = list(origin.urls)[0].split("/")[-1].split(".git")[0]  # get .../repo_name.git
+            print("Create and merge a Pull Request from feat/modules to dev here: https://bitbucket.org/mlreply/{repo_name}/pull-requests/new".format(repo_name=repo_name))
 
     except Exception as e:
 
@@ -90,40 +93,43 @@ def main(test=False):
         raise e
 
 
-def clean_branches(test=False):
+def clean_branches(local_generation=False):
 
     def is_to_be_cleaned(branch_name):
-        return branch_name.startswith(ARCHETYPE_BRANCH_PREFIX) or branch_name.startswith(PIPELINES_BRANCH_PREFIX)
+        return branch_name not in KEEP_BRANCHES
+
+    clean_remote_branch = lambda name: repo.remote().push(":{}".format(name))
+    clean_local_branches = lambda names: repo.delete_head([names], force=True)
 
     # Sanity check - NEVER delete the branches from the project archetype itself!
     is_original_archetype = [url for url in repo.remote().urls if "mlreply/project-archetype.git" in url]
-    if not is_original_archetype:
-
-        # Remove all remote archetype branches
-        print("Cleaning branches...")
-        for branch in repo.remote().refs:
-            name = branch.remote_head
-            if is_to_be_cleaned(name):
-                repo.remote().push(":{}".format(name))
-
-        # Remove local archetype branches
-        archetypes = [branch for branch in repo.heads if is_to_be_cleaned(branch.name)]
-        repo.delete_head([archetypes], force=True)
-        print("Done.")
-
-    else:
+    if is_original_archetype:
 
         # Raise error (or just print a message in case of tests)
-        error = "You were trying to delete all the branches from the original archetype! " \
-                "You have to IMPORT this repository, not to use it directly!"
-        if test:
-            # Just print an error message
-            print(error)
-        else:
+        if not local_generation:
+            error = "You were trying to delete all the branches from the original archetype! " \
+                    "You have to IMPORT this repository, not to use it directly!"
             raise PermissionError(error)
+        else:
+            print("This is just a simulation of deletion")
+            clean_remote_branch = lambda n: print("I would have deleted: ", n)
+            clean_local_branches = lambda names: print("Locally, I would have deleted: ", names)
 
 
-def clean_files():
+    # Remove all remote branches (if to be removed)
+    print("Cleaning branches...")
+    for branch in repo.remote().refs:
+        name = branch.remote_head
+        if is_to_be_cleaned(name):
+            clean_remote_branch(name)
+
+    # Remove local branches (if to be removed)
+    names = [branch for branch in repo.heads if is_to_be_cleaned(branch.name)]
+    clean_local_branches(names)
+    print("Done.")
+
+
+def clean_files(local_generation=False):
 
     # Remove files used for the archetype
     for file in ARCHETYPE_FILES:
@@ -173,4 +179,8 @@ def get_config():
 
 if __name__ == '__main__':
 
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--local-generation", action="store_true")
+    args, _ = parser.parse_known_args()
+
+    main(local_generation=args.local_generation)
