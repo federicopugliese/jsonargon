@@ -102,7 +102,7 @@ def clean_branches(local_generation=False):
     clean_local_branches = lambda names: repo.delete_head([names], force=True)
 
     # Sanity check - NEVER delete the branches from the project archetype itself!
-    is_original_archetype = [url for url in repo.remote().urls if "mlreply/project-archetype.git" in url]
+    is_original_archetype = [url for url in repo.remote().urls if "mlreply/project-archetype" in url]
     if is_original_archetype:
 
         # Raise error (or just print a message in case of tests)
