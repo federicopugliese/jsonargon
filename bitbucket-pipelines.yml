@@ -17,6 +17,7 @@ definitions:
 
     - step: &generate
         name: "Generate components"
+        image: python:3.7.4
         script:
           - source ./devops/pipelines/generate.sh
         artifacts:
