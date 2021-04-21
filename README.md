@@ -57,14 +57,14 @@ For instance, you can have multiple Python packages with different virtualenvs.
     1. Run `cat generate.yml | base64 -w0`
     1. Copy the output (with no trailing spaces!)
 1. Go to https://bitbucket.org/mlreply/project-archetype/addon/pipelines/home
-   1. Select "Run Pipeline" and choose branch "master"
-   1. Select pipeline "custom: generate-components"
-   1. Paste the copied output of previous step in `GENERATE_YML_BASE64`
-   1. Run the pipeline (in case of errors, open the `source ./devops/pipelines/generate.sh` on the right to check)
+    1. Select "Run Pipeline" and choose branch "master"
+    1. Select pipeline "custom: generate-components"
+    1. Paste the copied output of previous step in `GENERATE_YML_BASE64`
+    1. Run the pipeline (in case of errors, open the `source ./devops/pipelines/generate.sh` on the right to check)
 1. Once the pipeline has succeeded, move to the Artifacts tab on the right
-   1. Download the zip named `src/**`
-   1. Open it (typically with right click -> 7zip -> open) or extract it
-   1. Pick the content of the inner `src` folder. It will have the folders of your modules!
+    1. Download the zip named `src/**`
+    1. Open it (typically with right click -> 7zip -> open) or extract it
+    1. Pick the content of the inner `src` folder. It will have the folders of your modules!
 
 ## Archetypes
 
