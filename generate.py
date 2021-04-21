@@ -78,7 +78,7 @@ def main(local_generation=False):
         # Create PR
         if not local_generation:
             repo_name = list(origin.urls)[0].split("/")[-1].split(".git")[0]  # get .../repo_name.git
-            print(f"Create and merge a Pull Request from feat/modules to dev here: https://bitbucket.org/mlreply/{repo_name}/pull-requests/new")
+            print("Create and merge a Pull Request from feat/modules to dev here: https://bitbucket.org/mlreply/{repo_name}/pull-requests/new".format(repo_name=repo_name))
 
     except Exception as e:
 
