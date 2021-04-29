@@ -36,8 +36,12 @@ pipelines:
 
     archetype/*:
       - step: *propagate
+    develop/**:
+      - step: *propagate
     dev:
       - step: *test
+      - step: *propagate
+    master:
       - step: *propagate
 
   # Manual pipelines

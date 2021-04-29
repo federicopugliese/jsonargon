@@ -21,7 +21,7 @@ SOURCE = "src"
 MAIN_BRANCH = "master"
 FIRST_BRANCH = "feat/modules"
 ARCHETYPE_BRANCH_PREFIX = "archetype/"
-KEEP_BRANCHES = ["dev", "master"]
+KEEP_BRANCHES = ["dev", "master", "HEAD"]
 
 PROJECT_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 SOURCE_FOLDER = os.path.join(PROJECT_FOLDER, SOURCE)
