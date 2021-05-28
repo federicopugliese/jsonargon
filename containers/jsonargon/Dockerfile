@@ -1,7 +1,6 @@
-FROM python:{pythonversion}-slim
+FROM python:3.7.4-slim
 
-ARG PACKAGE="src/jsonargon/package"
-ENV SRC=${PACKAGE}
+ARG SRC="src/jsonargon/package"
 
 WORKDIR application
 
