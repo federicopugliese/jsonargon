@@ -23,7 +23,7 @@ setup(
     name=name,
     version="0.0.0",
     packages=find_packages(),
-    package_data={name: _get_resources(name), "tests": ["stubs/*"]},
+    package_data={name: _get_resources(name)},
     install_requires=requirements,
 
     description="Serialization and deserialization of JSON objects from/into Python objects (with validation and remapping capabilities)",
@@ -32,7 +32,7 @@ setup(
     license="Apache Software License, Version 2.0",
     classifiers=[
         "License :: OSI Approved :: Apache Software License",
-        "Development Status :: 3 - Alpha"
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7"
