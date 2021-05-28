@@ -21,7 +21,7 @@ with open(requirements_file, "r") as f:
 name = "jsonargon"
 setup(
     name=name,
-    version="1.0.0",
+    version="0.0.0",
     packages=find_packages(),
     package_data={name: _get_resources(name), "tests": ["stubs/*"]},
     install_requires=requirements,
@@ -32,6 +32,7 @@ setup(
     license="Apache Software License, Version 2.0",
     classifiers=[
         "License :: OSI Approved :: Apache Software License",
+        "Development Status :: 3 - Alpha"
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7"
