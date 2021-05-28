@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+
+  jsonargon:
+
+    build:
+      context: "./../.."
+      dockerfile: "containers/jsonargon/Dockerfile"
+      ## Use the following lines if you are on Reply network
+      #args:
+      #  http_proxy: "http://proxy.reply.it:8080"
+      #  https_proxy: "http://proxy.reply.it:8080"
+
+    image: "jsonargon"
+
+    ports:
+      - "8080:8080"
