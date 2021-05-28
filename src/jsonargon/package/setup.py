@@ -21,7 +21,7 @@ with open(requirements_file, "r") as f:
 name = "jsonargon"
 setup(
     name=name,
-    version="0.0.0",
+    version="1.0.0",
     description="Serialization and deserialization of JSON objects from/into Python objects (with validation and remapping capabilities)",
     packages=find_packages(),
     package_data={name: _get_resources(name), "tests": ["stubs/*"]},
