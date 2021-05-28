@@ -12,10 +12,15 @@ def _get_resources(package_name):
 
 
 # Read requirements
-requirements_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), "requirements.txt")
-with open(requirements_file, "r") as f:
+this_location = os.path.dirname(os.path.realpath(__file__))
+requirements_file = os.path.join(this_location, "requirements.txt")
+with open(requirements_file, "r", encoding="utf-8") as f:
     requirements = f.read().splitlines()
 
+# Read README
+readme_file = os.path.join(this_location, "README.md")
+with open(readme_file, "r", encoding="utf-8") as f:
+    readme = f.read()
 
 # Package configuration
 name = "jsonargon"
@@ -27,6 +32,8 @@ setup(
     install_requires=requirements,
 
     description="Serialization and deserialization of JSON objects from/into Python objects (with validation and remapping capabilities)",
+    long_description=readme,
+    long_description_content_type="text/markdown",
     url="https://gitlab.com/federico_pugliese/jsonargon",
     author="Federico Pugliese",
     license="Apache Software License, Version 2.0",
