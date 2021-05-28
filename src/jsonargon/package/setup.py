@@ -22,11 +22,11 @@ name = "jsonargon"
 setup(
     name=name,
     version="1.0.0",
-    description="Serialization and deserialization of JSON objects from/into Python objects (with validation and remapping capabilities)",
     packages=find_packages(),
     package_data={name: _get_resources(name), "tests": ["stubs/*"]},
     install_requires=requirements,
 
+    description="Serialization and deserialization of JSON objects from/into Python objects (with validation and remapping capabilities)",
     url="https://gitlab.com/federico_pugliese/jsonargon",
     author="Federico Pugliese",
     license="Apache Software License, Version 2.0",
