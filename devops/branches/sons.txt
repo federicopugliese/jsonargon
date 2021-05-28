@@ -1,7 +1,0 @@
-# List here the sons with this format: <father>: <son> <son> <son>
-dev: develop/archetype/python
-develop/archetype/python: develop/archetype/flask develop/archetype/conda
-develop/archetype/flask: develop/archetype/demo-flask
-master: archetype/python
-archetype/python: archetype/flask archetype/conda
-archetype/flask: archetype/demo-flask
