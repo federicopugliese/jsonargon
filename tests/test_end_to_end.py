@@ -1,11 +1,9 @@
 import json
 
 from jsonargon.decorators import jsonclass
-from jsonargon.deserializer import from_json
 from jsonargon.fields.dict import RequiredStringDict
 from jsonargon.fields.list import RequiredList
 from jsonargon.fields.simple import Required, Nullable
-from jsonargon.serializer import to_json
 
 
 @jsonclass
@@ -52,7 +50,7 @@ def test_serialization():
     customer.phones = [phone]
 
     # To json
-    customer_json = to_json(customer)
+    customer_json = customer.to_json()
 
     # Test it
     customer_dict = json.loads(customer_json)
@@ -100,7 +98,7 @@ def test_deserialization():
     customer_json = json.dumps(customer_dict)
 
     # Load json to objects
-    customer = from_json(customer_json, Customer)
+    customer = Customer.from_json(customer_json)
 
     # Test it
     assert (

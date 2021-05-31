@@ -1,5 +1,7 @@
 # JSON Argon
 
+https://gitlab.com/federico_pugliese/jsonargon
+
 **Serialization** and **deserialization** of **JSON** objects from/into **Python** objects (with **validation** and **remapping** capabilities).
 
 The underlying idea is to **annotate** a Python **Class** with metadata useful to serialize its objects into JSON strings and viceversa.
@@ -10,7 +12,6 @@ Main features and goals are:
 - JSON Validation
 - Optional remapping of fields name
 - Familiar interface
-- Ease of development with IDE hints
 
 ## Installation
 
@@ -52,10 +53,9 @@ The `Required` type annotation will make sure that `name` is in your JSON string
 
 If you have your JSON string, you can easily remap it into a Python object of that class, after you get your JSON string somehow (probably something like `{"name": "Jason Argonaut"}`):
 ```
-from jsonargon.deserializer import from_json
-
-person = from_json(your_json_string)
-
+person = Person.from_json(your_json_string)
+```
+```
 print(person.name)  # Jason Argonaut
 print(person.age)   # None
 ```
@@ -63,9 +63,7 @@ print(person.age)   # None
 You can also serialize your object into a JSON string.
 
 ```
-from jsonargon.serializer import to_json
-
-person_json_string = to_json(person)
+person_json_string = person.to_json()
 ```
 
 ### Advanced usage
