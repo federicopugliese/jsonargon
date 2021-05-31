@@ -26,7 +26,7 @@ with open(readme_file, "r", encoding="utf-8") as f:
 name = "jsonargon"
 setup(
     name=name,
-    version="0.0.1",
+    version="0.1.1",
     packages=find_packages(),
     package_data={name: _get_resources(name)},
     install_requires=requirements,
