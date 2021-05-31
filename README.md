@@ -93,7 +93,7 @@ Each field annotation support these parameters:
 | `RequiredList`  | A required (but maybe empty) list of objects of the specified `type` | `"names": ["Argo", "Atalanta"]`, or `"names": []` or `"crew": [{"name": "Argo"}, {"name": "Atalanta"}]` |
 | `NullableList`  | A nullable list of objects of the specified `type` | As above, or `"names": null` or no attribute at all |
 | `RequiredStringDict`  | A required (but maybe empty) dict of string -> objects of the specified `type` | `"tags": {"scope": "dev"}`, or `"tags": {}` or `"documents": {"name": {"length":12}}` |
-| `NullableStringDict`  | A required (but maybe empty) list of objects of the specified `type` | As above, or `"tags": null` or no attribute at all |
+| `NullableStringDict`  | A nullable dict of string -> objects of the specified `type` | As above, or `"tags": null` or no attribute at all |
 
 You can find a complete example here (with the JSON below):
 
