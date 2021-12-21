@@ -1,9 +1,9 @@
 import functools
 import typing
 
-from jsonargon.deserializer import from_json
+from jsonargon.deserializer import from_json, from_dict
 from jsonargon.fields.simple import JSONCLASS_DECORATED, Nullable
-from jsonargon.serializer import to_json
+from jsonargon.serializer import to_json, to_dict
 
 
 def jsonclass(cls):
@@ -30,9 +30,11 @@ def jsonclass(cls):
     # Override methods
     # Representation
     setattr(cls, "__repr__", lambda s: to_json(s).replace("\n", ""))
-    # To json and from json as class/object methods
+    # To json/dict and from json/dict as class/object methods
     setattr(cls, "to_json", to_json)
     setattr(_as_json_class, "from_json", lambda string: from_json(string, _as_json_class))
+    setattr(cls, "to_dict", to_dict)
+    setattr(_as_json_class, "from_dict", lambda dictionary: from_dict(dictionary, _as_json_class))
 
     return _as_json_class
 
