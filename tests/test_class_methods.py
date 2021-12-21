@@ -11,6 +11,27 @@ class Person:
     age: Nullable(int)
 
 
+def test_to_dict():
+
+    person = Person()
+    person.name = "Jason"
+    person_dict = person.to_dict()
+    assert person_dict["name"] == "Jason"
+
+
+def test_from_dict():
+
+    person = Person.from_dict({"name": "Jason"})
+    assert person.name == "Jason"
+
+
+def test_to_dict_from_dict():
+
+    person = Person.from_dict({"name": "Jason"})
+    person_dict = person.to_dict()
+    assert person_dict["name"] == "Jason"
+
+
 def test_to_json():
 
     person = Person()

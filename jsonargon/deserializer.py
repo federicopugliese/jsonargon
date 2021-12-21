@@ -15,10 +15,10 @@ def from_json(string: str, cls: Type[T]) -> T:
     dictionary = json.loads(string)
 
     # From dictionary to class
-    return _from_dict(dictionary, cls)
+    return from_dict(dictionary, cls)
 
 
-def _from_dict(dictionary: dict, cls: Type[T]) -> T:
+def from_dict(dictionary: dict, cls: Type[T]) -> T:
 
     obj = cls()
 
@@ -34,13 +34,13 @@ def _from_dict(dictionary: dict, cls: Type[T]) -> T:
         if getattr(metadata.type(), JSONCLASS_DECORATED, False):
             if isinstance(metadata, _ListField):
                 # List of objects
-                value = [_from_dict(element, metadata.type) for element in value]
+                value = [from_dict(element, metadata.type) for element in value]
             elif isinstance(metadata, _StringDictField):
                 # Dict of objects
-                value = {k: _from_dict(element, metadata.type) for k, element in value.items()}
+                value = {k: from_dict(element, metadata.type) for k, element in value.items()}
             else:
                 # Object
-                value = _from_dict(value, metadata.type)
+                value = from_dict(value, metadata.type)
 
         # Set it for the object
         setattr(obj, attribute, value)
