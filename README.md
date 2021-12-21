@@ -66,6 +66,17 @@ You can also serialize your object into a JSON string.
 person_json_string = person.to_json()
 ```
 
+If you just need to convert your object to and from a dictionary, without going all the way to a JSON string, you can do that as well.
+
+```
+person = Person.from_dict(your_dict)
+```
+```
+person_dict = person.to_dict()
+```
+
+This seems unimpressive? Take a look at the sweet stuff in the next section.
+
 ### Advanced usage
 
 JSON Argon also supports:
